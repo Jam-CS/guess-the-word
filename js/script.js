@@ -1,4 +1,4 @@
-const guessLetter = document.querySelector (".guessed-letters"); //The unordered list where the player’s guessed letters will appear
+const guessLetters = document.querySelector (".guessed-letters"); //The unordered list where the player’s guessed letters will appear
 const guessLetterbutton = document.querySelector (".guess"); //The button with the text “Guess!” in it
 const letterInput = document.querySelector (".letter"); //The text input where the player will guess a letter
 const wordInProgress = document.querySelector(".word-in-progress"); //The empty paragraph where the word in progress will appear
@@ -59,5 +59,38 @@ const makeGuess = function(guess){
     } else {
         guessedLetters.push (guess);
         console.log (guessedLetters);
+        showGuessedLetters();
+        updateWordInProgress(guessedLetters);
+    }
+};
+
+const showGuessedLetters = function (){
+    guessLetters.innerHTML ="";
+    for (const letter of guessedLetters) {
+        const li = document.createElement ("li");
+        li.innerText = letter;
+        guessLetters.append (li);
+    }
+};
+
+const updateWordInProgress = function (guessedLetters){
+    const wordUpper = word.toUpperCase();
+    const wordArray = wordUpper.split("");
+    const showWord = [];
+    for (const letter of wordArray) {
+        if (guessedLetters.includes(letter)) {
+            showWord.push(letter.toUpperCase());
+        } else {
+            showWord.push("●");
+        }
+    }
+    wordInProgress.innerText = showWord.join("");
+    checkIfWin();
+};
+
+const checkIfWin = function (){
+    if (word.toUpperCase() === wordInProgress.innerText) {
+        message.classList.add ("win");
+        message.innerHTML = `<p class="highlight">You guessed correct the word! Congrats!</p>`;
     }
 };
